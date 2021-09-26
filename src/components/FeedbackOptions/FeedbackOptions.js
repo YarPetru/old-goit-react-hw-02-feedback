@@ -1,20 +1,12 @@
 import React from 'react';
 
-const FeedbackOptions = ({
-  onLeaveGoodFeedback,
-  onLeaveNeutralFeedback,
-  onLeaveBadFeedback,
-}) => (
+const FeedbackOptions = ({ onLeaveFeedback, options }) => (
   <div>
-    <button type="button" onClick={onLeaveGoodFeedback}>
-      Good
-    </button>
-    <button type="button" onClick={onLeaveNeutralFeedback}>
-      Neutral
-    </button>
-    <button type="button" onClick={onLeaveBadFeedback}>
-      Bad
-    </button>
+    {options.map(option => (
+      <button type="button" onClick={onLeaveFeedback} className="button">
+        {option}
+      </button>
+    ))}
   </div>
 );
 

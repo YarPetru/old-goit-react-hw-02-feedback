@@ -14,22 +14,30 @@ class App extends Component {
     bad: 0,
   };
 
-  addGoodRating = () => {
-    this.setState(prevState => ({
-      good: prevState.good + 1,
-    }));
+  countTotalFeedback = () => {
+    return this.state.good + this.state.neutral + this.state.bad;
   };
 
-  addNeutralRating = () => {
-    this.setState(prevState => ({
-      neutral: prevState.neutral + 1,
-    }));
+  countPositiveFeedbackPercentage = () => {
+    const total = this.countTotalFeedback();
+    return Math.round((this.state.good * 100) / total);
   };
 
-  addBadRating = () => {
-    this.setState(prevState => ({
-      bad: prevState.bad + 1,
-    }));
+  handleIncrement = evt => {
+    const feedBackType = evt.target.textContent.toLowerCase();
+    if (feedBackType === 'good') {
+      this.setState(prevState => ({
+        good: prevState.good + 1,
+      }));
+    } else if (feedBackType === 'neutral') {
+      this.setState(prevState => ({
+        neutral: prevState.neutral + 1,
+      }));
+    } else if (feedBackType === 'bad') {
+      this.setState(prevState => ({
+        bad: prevState.bad + 1,
+      }));
+    }
   };
 
   dischargeRatings = () => {
@@ -40,26 +48,24 @@ class App extends Component {
     });
   };
 
-  countTotalFeedback = () => {
-    return this.state.good + this.state.neutral + this.state.bad;
-  };
-  countPositiveFeedbackPercentage = () => {
-    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
-  };
-
   render() {
     const total = this.countTotalFeedback();
-    const positive = this.countPositiveFeedbackPercentage();
+    const positivePercentage = this.countPositiveFeedbackPercentage();
     const { good, neutral, bad } = this.state;
 
     return (
       <div className="App">
         <Section title="Please leave feedback">
           <FeedbackOptions
+            options={['Good', 'Neutral', 'Bad']}
+            onLeaveFeedback={this.handleIncrement}
+          />
+
+          {/* <FeedbackOptions
             onLeaveGoodFeedback={this.addGoodRating}
             onLeaveNeutralFeedback={this.addNeutralRating}
             onLeaveBadFeedback={this.addBadRating}
-          />
+          /> */}
         </Section>
         {/* <div>
           <button type="button" onClick={this.addGoodRating}>
@@ -78,8 +84,15 @@ class App extends Component {
             neutral={neutral}
             bad={bad}
             total={total}
-            positivePercentage={positive}
+            positivePercentage={positivePercentage}
           />
+          {/* <Statistics
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            total={total}
+            positivePercentage={positive}
+          /> */}
           {/* <h3>Statistics</h3>
         <ul>
           <li>Good: {this.state.good}</li>
